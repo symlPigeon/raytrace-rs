@@ -69,7 +69,7 @@ fn main() {
     )));
 
     let image_size = (1920_u32, 1080_u32);
-    let samples_per_pixel = 500;
+    let samples_per_pixel = 100;
     let max_depth = 50;
     let vfov = 20.0;
     let lookfrom = Vec3::new(13.0, 2.0, 3.0);
@@ -78,7 +78,7 @@ fn main() {
     let defocus = (0.6, 10.0);
     let mut camera = Camera::new(
         image_size,
-        "random_scene_sphere.png",
+        "random_scene_sphere_1.png",
         max_depth,
         samples_per_pixel,
         vfov,
@@ -86,6 +86,31 @@ fn main() {
         defocus
     );
 
+    let start_time = std::time::Instant::now();
+    camera.render(&world, false);
+    let end_time = std::time::Instant::now();
+    println!(
+        "Single Thread render time: {} seconds",
+        (end_time - start_time).as_secs_f64()
+    );
+    camera.output();
+
+    let mut camera = Camera::new(
+        image_size,
+        "random_scene_sphere_2.png",
+        max_depth,
+        samples_per_pixel,
+        vfov,
+        (lookfrom, lookat, vup),
+        defocus
+    );
+
+    let start_time = std::time::Instant::now();
     camera.render(&world, true);
+    let end_time = std::time::Instant::now();
+    println!(
+        "Multithread render time: {} seconds",
+        (end_time - start_time).as_secs_f64()
+    );
     camera.output();
 }

@@ -14,11 +14,11 @@ fn main() {
     let material_left = Dielectric::new(1.5);
     let material_right = Metal::new(Vec3::new(0.8, 0.6, 0.2), 0.0);
 
-    // world.add(Box::new(Sphere::new(
-    //     Vec3::new(0.0, -100.5, -1.0),
-    //     100.0,
-    //     material_ground.clone(),
-    // )));
+    world.add(Box::new(Sphere::new(
+        Vec3::new(0.0, -100.5, -1.0),
+        100.0,
+        material_ground.clone(),
+    )));
     world.add(Box::new(Sphere::new(
         Vec3::new(0.0, 0.0, -1.0),
         0.5,
@@ -39,14 +39,6 @@ fn main() {
         0.5,
         material_right.clone(),
     )));
-    // world.add(B
-    world.add(Box::new(Rectangle::new(
-        Vec3::new(-10.0, -0.5, -10.0),
-        Vec3::new(10.0, -0.5, 10.0),
-        Vec3::new(0.0, 1.0, 0.0),
-        // Mirror::new(),
-        material_right.clone(),
-    )));
 
     let world = world;
 
@@ -61,7 +53,7 @@ fn main() {
         "output.png",
         50,
         100,
-        90.0,
+        20.0,
         (lookfrom, lookat, vup),
         defocus,
     );
