@@ -58,7 +58,7 @@ impl Hittable for Rectangle {
             || norm_coor.z < 0.0
             || norm_coor.z > 1.0
         {
-            //return None;
+            return None;
         }
 
         if !interval.contains((root - ray.origin).length()) {

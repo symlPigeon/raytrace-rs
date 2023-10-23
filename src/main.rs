@@ -2,7 +2,7 @@ use ray_trace::{
     camera::Camera,
     hit::HittableList,
     material::materials::{Dielectric, Lambertian, Metal, Mirror},
-    model::{rectangle::Rectangle, sphere::Sphere},
+    model::{rectangle::Rectangle, sphere::Sphere, triangle::Triangle},
     vec3::Vec3,
 };
 
@@ -14,30 +14,34 @@ fn main() {
     let material_left = Dielectric::new(1.5);
     let material_right = Metal::new(Vec3::new(0.8, 0.6, 0.2), 0.0);
 
-    world.add(Box::new(Sphere::new(
-        Vec3::new(0.0, -100.5, -1.0),
-        100.0,
-        material_ground.clone(),
-    )));
-    world.add(Box::new(Sphere::new(
-        Vec3::new(0.0, 0.0, -1.0),
-        0.5,
+    let l1 = Vec3::new(-1.0, 0.0, -1.0);
+    let l2 = Vec3::new(1.0, 0.0, -1.0);
+    let l3 = Vec3::new(0.0, 0.0, 1.0);
+    let l4 = Vec3::new(0.0, 1.0, 0.0);
+
+    world.add(Box::new(Triangle::new(
+        l1,
+        l2,
+        l3,
         material_center.clone(),
     )));
-    world.add(Box::new(Sphere::new(
-        Vec3::new(-1.0, 0.0, -1.0),
-        0.5,
-        material_left.clone(),
+    world.add(Box::new(Triangle::new(
+        l1,
+        l2,
+        l4,
+        material_center.clone(),
     )));
-    world.add(Box::new(Sphere::new(
-        Vec3::new(-1.0, 0.0, -1.0),
-        -0.4,
-        material_left.clone(),
+    world.add(Box::new(Triangle::new(
+        l1,
+        l3,
+        l4,
+        material_center.clone(),
     )));
-    world.add(Box::new(Sphere::new(
-        Vec3::new(1.0, 0.0, -1.0),
-        0.5,
-        material_right.clone(),
+    world.add(Box::new(Triangle::new(
+        l2,
+        l3,
+        l4,
+        material_center.clone(),
     )));
 
     let world = world;
@@ -53,7 +57,7 @@ fn main() {
         "output.png",
         50,
         100,
-        20.0,
+        90.0,
         (lookfrom, lookat, vup),
         defocus,
     );
