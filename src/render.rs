@@ -73,6 +73,9 @@ pub fn multithread_render(world: &HittableList, config: &CameraConfig) -> Vec<Ve
         vec![vec![[0u8; 3]; config.image_size.0 as usize]; config.image_size.1 as usize];
     let row_iter: Vec<_> = image.chunks_exact_mut(1).enumerate().collect();
     let progress_bar = ProgressBar::new(config.image_size.1 as u64);
+    if config.disable_progress_bar {
+        progress_bar.set_draw_target(indicatif::ProgressDrawTarget::hidden());
+    }
     row_iter.into_par_iter().for_each(|(row, chunk)| {
         for col in 0..config.image_size.0 {
             let pixel_color = render_pixel(col, row as u32, world, config);
@@ -88,6 +91,9 @@ pub fn singlethread_render(world: &HittableList, config: &CameraConfig) -> Vec<V
     let mut image =
         vec![vec![[0u8; 3]; config.image_size.0 as usize]; config.image_size.1 as usize];
     let progress_bar = ProgressBar::new(config.image_size.1 as u64);
+    if config.disable_progress_bar {
+        progress_bar.set_draw_target(indicatif::ProgressDrawTarget::hidden());
+    }
     for row in 0..config.image_size.1 {
         for col in 0..config.image_size.0 {
             let pixel_color = render_pixel(col, row, world, config);

@@ -18,7 +18,8 @@ pub struct CameraConfig {
     pub vfov: f64,
     pub defocus_u: Vec3,
     pub defocus_v: Vec3,
-    pub defocus_angle: f64
+    pub defocus_angle: f64,
+    pub disable_progress_bar: bool,
 }
 
 impl Clone for CameraConfig {
@@ -35,16 +36,17 @@ impl Clone for CameraConfig {
             vfov: self.vfov,
             defocus_u: self.defocus_u,
             defocus_v: self.defocus_v,
-            defocus_angle: self.defocus_angle
+            defocus_angle: self.defocus_angle,
+            disable_progress_bar: self.disable_progress_bar,
         }
     }
 }
 
 pub struct Camera {
     output_handler: ImageBuffer<Rgb<u8>, Vec<u8>>,
-    filepath: String,
-    image: Vec<Vec<[u8; 3]>>,
-    config: CameraConfig,
+    pub filepath: String,
+    pub image: Vec<Vec<[u8; 3]>>,
+    pub config: CameraConfig,
 }
 
 impl Camera {
@@ -106,9 +108,14 @@ impl Camera {
                 vfov,
                 defocus_u,
                 defocus_v,
-                defocus_angle
+                defocus_angle,
+                disable_progress_bar: false,
             },
         }
+    }
+
+    pub fn disable_progress_bar(&mut self) {
+        self.config.disable_progress_bar = true;
     }
 
     pub fn render(&mut self, world: &HittableList, multithread: bool) {
